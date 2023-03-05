@@ -20,7 +20,6 @@ const routes = require("./config/routes.config");
 app.use("/", routes);
 
 
-
 app.listen(process.env.PORT||3300, () => {
   console.log(`Example app listening at http://localhost:${process.env.PORT}`);
 });

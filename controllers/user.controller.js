@@ -1,35 +1,41 @@
 const { connection } = require('../config/db.config')
 
 
-
-module.exports.list = (req, res, next) => {
-  connection.query('SELECT * FROM usuarios', function (error, results, fields) {
-    if (error)
-        throw error;
-  
-    results.forEach(result => {
-        // console.log(result);
-          res.status(200).json(results);
-
-        
-    });
-  });
-};
-
-
 module.exports.home = (req, res, next ) => { 
   res.json({ message: "oki" });
   
  }
 
-//Insert into Carta (plato, descripcion, precio, disponible) values ("Entrecot", "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore", 19.99, true);
+module.exports.list = (req, res, next) => {
+  connection.query('SELECT * FROM usuarios', (error, results, fields) => {
+    if (error)
+        throw error;
+    res.status(200).json(results);
+    // console.log(result);
+  });
+};
 
+module.exports.addUser = ( req, res ) => {
 
-// CREATE TABLE carta
-// (
-//     id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-//     plato VARCHAR(25) NOT NULL,
-//     descripcion VARCHAR(255),
-//     precio DECIMAL(12, 2) NOT NULL,
-//     disponible BOOLEAN
-// )
+  const { nombre, contrasena, email } = req.body;
+  // console.log(nombre, contrasena, email)
+  connection.query( 'INSERT INTO usuarios(nombre, contrasena, email) VALUES (?,?,?)', 
+  [nombre, contrasena, email],
+  (error, results) => {
+    if( error )
+      throw error;
+      console.log(results.affectedRows)
+    res.status(201).json('Usuario añadido correctamente');
+  });
+};
+
+module.exports.deleteUser =( req, res ) => {
+  const id = req.params.id;
+  connection.query('DELETE from usuarios where id = ?', [ id ],
+  (error, results ) => {
+    if( error )
+      throw error;
+    
+    res.status(201).json('Usuario eliminado')
+  })
+};

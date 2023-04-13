@@ -17,3 +17,12 @@ try {
 }
 
 module.exports = {connection};
+
+setInterval(keepAlive, 290000);
+let counterAlive = 5
+function keepAlive() {
+    connection.query('SELECT 1');
+    console.log(`Servidor activo ${counterAlive} minutos`);
+    counterAlive += 5
+    return;
+}

@@ -15,5 +15,7 @@ router.delete('/users/:id', user.deleteUser);
 
 
 router.get('/mensajes', message.mensajes);
+router.get('/mensajes/:id', message.message);
+router.post('/mensajes/read/:id', message.read);
 
 module.exports = router;
